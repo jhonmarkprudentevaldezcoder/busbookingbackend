@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const Users = require("./models/userModel");
+const Buses = require("./models/busModel");
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
@@ -14,6 +15,27 @@ app.use(express.urlencoded({ extended: false }));
 //default route
 app.get("/", (req, res) => {
   res.send("API WORKING SUCCESS");
+});
+
+//register bus
+app.post("/addbus", async (req, res) => {
+  try {
+    const bus = await Buses.create(req.body);
+    res.status(200).json(bus);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//get all buses
+app.get("/buses", async (req, res) => {
+  try {
+    const buses = await Buses.find({});
+    res.status(200).json(buses);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 //register
@@ -37,7 +59,6 @@ app.post("/register", async (req, res) => {
 });
 
 //login
-
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
