@@ -83,7 +83,7 @@ app.post("/login", async (req, res) => {
 mongoose.set("strictQuery", false);
 mongoose
   .connect(
-    "mongodb+srv://busreservation:busreservation4D@cluster0.mck9kkm.mongodb.net/"
+    "mongodb+srv://busreservation:busreservation4D@cluster0.mck9kkm.mongodb.net/OnlineBusTicketReservationSystem"
   )
   .then(() => {
     console.log("connected to MongoDB");
