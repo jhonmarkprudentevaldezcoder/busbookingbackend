@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const userSchema = mongoose.Schema(
   {
+    rfid: {
+      type: String,
+    },
     firstname: {
       type: String,
       required: [true, "Please enter first name"],
