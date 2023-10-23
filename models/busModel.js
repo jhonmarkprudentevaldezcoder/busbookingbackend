@@ -23,6 +23,9 @@ const busSchema = mongoose.Schema(
     droppingName: {
       type: String,
     },
+    seatNo: {
+      type: String,
+    },
     a1: {
       type: String,
     },

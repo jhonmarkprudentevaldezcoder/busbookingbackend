@@ -28,6 +28,24 @@ app.post("/addbus", async (req, res) => {
   }
 });
 
+//update bus seat
+app.put("/schedule/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const bus = await Buses.findByIdAndUpdate(id, req.body);
+
+    if (!schedule) {
+      return res
+        .status(404)
+        .json({ message: `cannot find any schedule with ID ${id}` });
+    }
+    const updatedSchedule = await Schedules.findById(id);
+    res.status(200).json(updatedSchedule);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //get all buses
 app.get("/buses", async (req, res) => {
   try {
