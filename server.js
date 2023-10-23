@@ -56,6 +56,23 @@ app.get("/buses", async (req, res) => {
   }
 });
 
+//get all users
+app.get("/users", async (req, res) => {
+  try {
+    // Find all users with the "rfid" field using a filter
+    const users = await Users.find({ rfid: { $exists: true, $ne: null } });
+
+    // Check if any users were found
+    if (users.length > 0) {
+      res.status(200).json(users);
+    } else {
+      res.status(404).json({ message: "No users with RFID found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //register
 app.post("/register", async (req, res) => {
   const { email } = req.body;
