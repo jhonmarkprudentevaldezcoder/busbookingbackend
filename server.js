@@ -73,6 +73,22 @@ app.get("/users", async (req, res) => {
   }
 });
 
+//search user
+app.get("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const users = await Users.find({ rfid: id });
+
+    if (users.length === 0) {
+      return res.status(404).json({ message: "No matching records found" });
+    }
+
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //register
 app.post("/register", async (req, res) => {
   const { email } = req.body;
