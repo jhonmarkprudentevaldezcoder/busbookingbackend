@@ -73,6 +73,24 @@ app.get("/user", async (req, res) => {
   }
 });
 
+//update user
+app.put("/user/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await Users.findByIdAndUpdate(id, req.body);
+
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: `cannot find any schedule with ID ${id}` });
+    }
+    const updatedUser = await Users.findById(id);
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //search user
 app.get("/user/:id", async (req, res) => {
   try {
