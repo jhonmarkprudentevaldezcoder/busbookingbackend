@@ -24,6 +24,7 @@ const busSchema = mongoose.Schema(
       type: String,
     },
     seatNo: {
+      default: "32",
       type: String,
     },
     a1: {
