@@ -57,7 +57,7 @@ app.get("/buses", async (req, res) => {
 });
 
 //get all users
-app.get("/users", async (req, res) => {
+app.get("/user", async (req, res) => {
   try {
     // Find all users with the "rfid" field using a filter
     const users = await Users.find({ rfid: { $exists: true, $ne: null } });
