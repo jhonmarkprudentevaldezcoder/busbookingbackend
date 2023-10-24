@@ -107,6 +107,22 @@ app.get("/user/:id", async (req, res) => {
   }
 });
 
+//search bus
+app.get("/bus/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const buses = await Buses.find({ category: id });
+
+    if (buses.length === 0) {
+      return res.status(404).json({ message: "No matching records found" });
+    }
+
+    res.status(200).json(buses);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //register
 app.post("/register", async (req, res) => {
   const { email } = req.body;
