@@ -37,7 +37,7 @@ app.put("/schedule/:id", async (req, res) => {
     if (!schedule) {
       return res
         .status(404)
-        .json({ message: `cannot find any schedule with ID ${id}` });
+        .json({ message: `cannot find any Bus with ID ${id}` });
     }
     const updatedSchedule = await Schedules.findById(id);
     res.status(200).json(updatedSchedule);
@@ -82,10 +82,28 @@ app.put("/user/:id", async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ message: `cannot find any schedule with ID ${id}` });
+        .json({ message: `cannot find any user with ID ${id}` });
     }
     const updatedUser = await Users.findById(id);
     res.status(200).json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//update bus
+app.put("/bus/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const bus = await Buses.findByIdAndUpdate(id, req.body);
+
+    if (!bus) {
+      return res
+        .status(404)
+        .json({ message: `cannot find any Bus with ID ${id}` });
+    }
+    const updatedBus = await Buses.findById(id);
+    res.status(200).json(updatedBus);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
