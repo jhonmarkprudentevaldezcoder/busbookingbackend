@@ -47,7 +47,7 @@ app.put("/schedule/:id", async (req, res) => {
 });
 
 //get all buses
-app.get("/buses", async (req, res) => {
+app.get("/bus", async (req, res) => {
   try {
     const buses = await Buses.find({});
     res.status(200).json(buses);
