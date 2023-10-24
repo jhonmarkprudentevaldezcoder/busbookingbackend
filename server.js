@@ -139,6 +139,30 @@ app.put("/bus/:id/:seatId/reserve", async (req, res) => {
   }
 });
 
+app.get("/bus/:id/:seatId/seatChecker", async (req, res) => {
+  try {
+    const { id, seatId } = req.params;
+    const bus = await Buses.findById(id);
+
+    if (!bus) {
+      return res
+        .status(404)
+        .json({ message: `Cannot find any Bus with ID ${id}` });
+    }
+    const seatStatus = bus[seatId]; // Access the seat status dynamically
+
+    if (seatStatus === "available") {
+      res.status(200).json({ seatStatus });
+    } else if (seatStatus === "selected") {
+      res.status(200).json({ seatStatus });
+    } else {
+      res.status(409).json({ seatStatus });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //search user
 app.get("/user/:id", async (req, res) => {
   try {
