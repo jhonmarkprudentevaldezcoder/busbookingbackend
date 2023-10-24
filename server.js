@@ -124,9 +124,13 @@ app.put("/bus/:id/:seatId/reserve", async (req, res) => {
 
     if (seatStatus === "available") {
       // Update the bus seat status to "Reserved"
-      bus[seatId] = "Reserved";
+      bus[seatId] = "selected";
       await bus.save();
       res.status(200).json({ message: "Seat reserved successfully." });
+    } else if (seatStatus === "selected") {
+      bus[seatId] = "available";
+      await bus.save();
+      res.status(200).json({ message: "Seat deleted." });
     } else {
       res.status(409).json({ message: "Seat is already reserved." });
     }
