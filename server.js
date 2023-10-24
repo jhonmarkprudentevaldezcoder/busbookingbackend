@@ -149,15 +149,27 @@ app.get("/bus/:id/:seatId/seatChecker", async (req, res) => {
         .status(404)
         .json({ message: `Cannot find any Bus with ID ${id}` });
     }
+
     const seatStatus = bus[seatId]; // Access the seat status dynamically
 
-    if (seatStatus === "available") {
-      res.status(200).json({ seatStatus });
-    } else if (seatStatus === "selected") {
-      res.status(200).json({ seatStatus });
-    } else {
-      res.status(409).json({ seatStatus });
+    let responseMessage;
+    let statusCode;
+
+    switch (seatStatus) {
+      case "available":
+        responseMessage = "available";
+        statusCode = 200;
+        break;
+      case "selected":
+        responseMessage = "selected";
+        statusCode = 200;
+        break;
+      default:
+        responseMessage = "Reserved";
+        statusCode = 200;
     }
+
+    res.status(statusCode).json({ message: responseMessage });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
