@@ -109,6 +109,32 @@ app.put("/bus/:id", async (req, res) => {
   }
 });
 
+app.put("/bus/:id/:seatId/reserve", async (req, res) => {
+  try {
+    const { id, seatId } = req.params;
+    const bus = await Buses.findById(id);
+
+    if (!bus) {
+      return res
+        .status(404)
+        .json({ message: `Cannot find any Bus with ID ${id}` });
+    }
+
+    const seatStatus = bus[seatId]; // Access the seat status dynamically
+
+    if (seatStatus === "available") {
+      // Update the bus seat status to "Reserved"
+      bus[seatId] = "Reserved";
+      await bus.save();
+      res.status(200).json({ message: "Seat reserved successfully." });
+    } else {
+      res.status(409).json({ message: "Seat is already reserved." });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //search user
 app.get("/user/:id", async (req, res) => {
   try {
