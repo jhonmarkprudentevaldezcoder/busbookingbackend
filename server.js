@@ -145,9 +145,9 @@ app.put("/bus/:id/:seatId/:userId/reserve", async (req, res) => {
   }
 });
 
-app.get("/bus/:id/:seatId/seatChecker", async (req, res) => {
+app.get("/bus/:id/:seatId/:userId/seatChecker", async (req, res) => {
   try {
-    const { id, seatId } = req.params;
+    const { id, seatId, userId } = req.params;
     const bus = await Buses.findById(id);
 
     if (!bus) {
@@ -166,8 +166,8 @@ app.get("/bus/:id/:seatId/seatChecker", async (req, res) => {
         responseMessage = "available";
         statusCode = 200;
         break;
-      case "selected":
-        responseMessage = "selected";
+      case userId:
+        responseMessage = userId;
         statusCode = 200;
         break;
       default:
