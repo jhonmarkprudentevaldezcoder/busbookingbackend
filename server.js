@@ -122,17 +122,23 @@ app.put("/bus/:id/:seatId/:userId/reserve", async (req, res) => {
 
     const seatStatus = bus[seatId]; // Access the seat status dynamically
 
+    console.log(seatStatus);
+
     if (seatStatus === "available") {
-      // Update the bus seat status to the user's ID
       bus[seatId] = userId; // Assuming userId is passed in the route
       await bus.save();
-      res.status(200).json({ message: "Seat reserved successfully." });
+      res.status(200).json({
+        message: "Seat reserved successfully.",
+        seatStatus: seatStatus,
+      });
     } else if (seatStatus === userId) {
       bus[seatId] = "available";
       await bus.save();
       res.status(200).json({ message: "Seat deleted." });
-    } else {
-      res.status(409).json({ message: "Seat is already reserved." });
+    } else if (seatStatus != userId && seatStatus != "available") {
+      res
+        .status(409)
+        .json({ message: "Seat is already reserved.", seatStatus: seatStatus });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
