@@ -2,6 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Users = require("./models/userModel");
 const Buses = require("./models/busModel");
+const UserReserveds = require("./models/userReservedModel");
+const BusRoute = require("./models/routeSchema");
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
@@ -15,6 +17,33 @@ app.use(express.urlencoded({ extended: false }));
 //default route
 app.get("/", (req, res) => {
   res.send("API WORKING SUCCESS");
+});
+
+//add new route to a bus
+app.post("/route", async (req, res) => {
+  try {
+    const busRoute = await BusRoute.create(req.body);
+    res.status(200).json(busRoute);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//search bus routes
+app.get("/route/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const busRoutes = await BusRoute.find({ busId: id });
+
+    if (busRoutes.length === 0) {
+      return res.status(404).json({ message: "No matching records found" });
+    }
+
+    res.status(200).json(busRoutes);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 //register bus
