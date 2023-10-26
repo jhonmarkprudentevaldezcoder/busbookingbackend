@@ -30,6 +30,27 @@ app.post("/reserved", async (req, res) => {
   }
 });
 
+//search bus routes
+app.get("/reserved/:id/:busId/:userId", async (req, res) => {
+  try {
+    const { id, busId, userId } = req.params;
+    const reserved = await UserReserveds.find({ id });
+    const reservedBus = await UserReserveds.find({ busId: busId });
+
+    if (reserved.length === 0) {
+      return res.status(404).json({ message: "No matching records found" });
+    }
+
+    if (reservedBus.length === 0) {
+      return res.status(404).json({ message: "No matching records found" });
+    }
+
+    res.status(200).json(busRoutes);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //add new route to a bus
 app.post("/route", async (req, res) => {
   try {

@@ -2,6 +2,15 @@ const mongoose = require("mongoose");
 
 const userReservedSchema = mongoose.Schema(
   {
+    userid: {
+      type: String,
+    },
+    busName: {
+      type: String,
+    },
+    busCategory: {
+      type: String,
+    },
     firstname: {
       type: String,
     },
