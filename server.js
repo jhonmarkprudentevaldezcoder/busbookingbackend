@@ -19,6 +19,17 @@ app.get("/", (req, res) => {
   res.send("API WORKING SUCCESS");
 });
 
+//add new reserved to a bus
+app.post("/reserved", async (req, res) => {
+  try {
+    const userReserved = await UserReserveds.create(req.body);
+    res.status(200).json(userReserved);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //add new route to a bus
 app.post("/route", async (req, res) => {
   try {
