@@ -255,6 +255,42 @@ app.put("/bus/:id/:seatId/:userId/reserve", async (req, res) => {
   }
 });
 
+app.get("/bus/:id/:seatId/:userEmail", async (req, res) => {
+  try {
+    const { id, seatId, userEmail } = req.params;
+    const bus = await Buses.findById(id);
+
+    if (!bus) {
+      return res
+        .status(404)
+        .json({ message: `Cannot find any Bus with ID ${id}` });
+    }
+
+    const seatStatus = bus[seatId]; // Access the seat status dynamically
+
+    let responseMessage;
+    let statusCode;
+
+    switch (seatStatus) {
+      case "available":
+        responseMessage = "available";
+        statusCode = 200;
+        break;
+      case userEmail:
+        responseMessage = userEmail;
+        statusCode = 200;
+        break;
+      default:
+        responseMessage = "Reserved";
+        statusCode = 200;
+    }
+
+    res.status(statusCode).json({ message: responseMessage });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.get("/bus/:id/:seatId/:userId/seatChecker", async (req, res) => {
   try {
     const { id, seatId, userId } = req.params;
