@@ -40,6 +40,24 @@ app.get("/reserveds", async (req, res) => {
   }
 });
 
+//search reserved by email
+app.get("/reserveds/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const reserved = await UserReserveds.find({ email: email });
+
+    if (reserved.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No resreved id matching records found" });
+    }
+
+    res.status(200).json(reserved);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //search reserved
 app.get("/reserved/:id/:busId/:userId", async (req, res) => {
   try {
