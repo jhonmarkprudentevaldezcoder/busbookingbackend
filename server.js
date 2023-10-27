@@ -30,6 +30,16 @@ app.post("/reserved", async (req, res) => {
   }
 });
 
+//get all reserved
+app.get("/reserveds", async (req, res) => {
+  try {
+    const userReserveds = await UserReserveds.find({});
+    res.status(200).json(userReserveds);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //search reserved
 app.get("/reserved/:id/:busId/:userId", async (req, res) => {
   try {
