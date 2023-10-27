@@ -101,6 +101,16 @@ app.post("/route", async (req, res) => {
   }
 });
 
+//get all ROUTES
+app.get("/bus/routes", async (req, res) => {
+  try {
+    const busRoute = await BusRoute.find({});
+    res.status(200).json(busRoute);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //search bus routes
 app.get("/route/:id", async (req, res) => {
   try {
