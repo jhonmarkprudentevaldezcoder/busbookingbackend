@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const busSchema = mongoose.Schema(
   {
+    busid: {
+      type: String,
+    },
+
     drivername: {
       type: String,
     },
