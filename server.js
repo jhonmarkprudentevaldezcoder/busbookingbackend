@@ -320,7 +320,6 @@ app.get("/bus/:id/:seatId/:userId/seatChecker", async (req, res) => {
         responseMessage = "Reserved";
         statusCode = 200;
     }
-
     res.status(statusCode).json({ message: responseMessage });
   } catch (error) {
     res.status(500).json({ message: error.message });
