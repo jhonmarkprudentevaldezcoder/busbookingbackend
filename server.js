@@ -4,6 +4,7 @@ const Users = require("./models/userModel");
 const Buses = require("./models/busModel");
 const UserReserveds = require("./models/userReservedModel");
 const BusRoute = require("./models/routeSchema");
+const BusesInfo = require("./models/busInfoModel");
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
@@ -17,6 +18,62 @@ app.use(express.urlencoded({ extended: false }));
 //default route
 app.get("/", (req, res) => {
   res.send("API WORKING SUCCESS");
+});
+
+app.post("/businfo", async (req, res) => {
+  try {
+    const busesInfo = await BusesInfo.create(req.body);
+    res.status(200).json(busesInfo);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//get all businfo
+app.get("/businfo", async (req, res) => {
+  try {
+    const busesInfos = await BusesInfo.find({});
+    res.status(200).json(busesInfos);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//search bus info by bus name
+app.get("/businfo/:busno", async (req, res) => {
+  try {
+    const { busno } = req.params;
+    const businfo = await BusesInfo.find({ busno: busno });
+
+    if (businfo.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No resreved id matching records found" });
+    }
+
+    res.status(200).json(businfo);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//update businfo
+app.put("/businfo/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const bus = await BusesInfo.findByIdAndUpdate(id, req.body);
+
+    if (!bus) {
+      return res
+        .status(404)
+        .json({ message: `cannot find any Bus with ID ${id}` });
+    }
+    const updatedBus = await BusesInfo.findById(id);
+    res.status(200).json(updatedBus);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 
 //add new reserved to a bus
