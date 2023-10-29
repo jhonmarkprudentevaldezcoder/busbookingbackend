@@ -172,7 +172,7 @@ app.get("/bus/routes", async (req, res) => {
 app.get("/route/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const busRoutes = await BusRoute.find({ busId: id });
+    const busRoutes = await Buses.find({ _id: id });
 
     if (busRoutes.length === 0) {
       return res.status(404).json({ message: "No matching records found" });
