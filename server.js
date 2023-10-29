@@ -184,6 +184,22 @@ app.get("/route/:id", async (req, res) => {
   }
 });
 
+//get bus ticket
+app.get("/ticket/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const userReserved = await UserReserveds.find({ email: email });
+
+    if (userReserved.length === 0) {
+      return res.status(404).json({ message: "No matching records found" });
+    }
+
+    res.status(200).json(userReserved);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //register bus
 app.post("/addbus", async (req, res) => {
   try {
