@@ -97,6 +97,17 @@ app.get("/reserveds", async (req, res) => {
   }
 });
 
+//count all reserved
+app.get("/reserveds/cout", async (req, res) => {
+  try {
+    const userReserveds = await UserReserveds.find({});
+    const reservedCount = userReserveds.length;
+    res.status(200).json(reservedCount);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //search reserved by email
 app.get("/reserveds/:email", async (req, res) => {
   try {
