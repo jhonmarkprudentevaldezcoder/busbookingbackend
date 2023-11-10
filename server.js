@@ -277,6 +277,19 @@ app.get("/user", async (req, res) => {
   }
 });
 
+//count all staff
+app.get("/user/count", async (req, res) => {
+  try {
+    // Find all users with the "rfid" field using a filter
+    const users = await Users.find({ rfid: { $exists: true, $ne: null } });
+    const staffCount = users.length;
+    // Check if any users were found
+    res.status(200).json(staffCount);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //update user
 app.put("/user/:id", async (req, res) => {
   try {
