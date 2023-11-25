@@ -308,6 +308,38 @@ app.put("/user/:id", async (req, res) => {
   }
 });
 
+//update user points
+app.put("/user/:id/:points", async (req, res) => {
+  try {
+    const { id, points } = req.params;
+
+    // Check if points are provided in the URL parameters
+    if (points === undefined) {
+      return res
+        .status(400)
+        .json({ message: "Points are required for update" });
+    }
+
+    // Find and update the user by ID
+    const user = await Users.findByIdAndUpdate(
+      id,
+      { $set: { points } },
+      { new: true }
+    );
+
+    // Check if the user is not found
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: `Cannot find any user with ID ${id}` });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //update bus
 app.put("/bus/:id", async (req, res) => {
   try {
