@@ -5,6 +5,9 @@ const userReservedSchema = mongoose.Schema(
     userid: {
       type: String,
     },
+    contact: {
+      type: String,
+    },
     busName: {
       type: String,
     },
