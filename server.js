@@ -523,6 +523,7 @@ app.post("/login", async (req, res) => {
       email: user.email,
       userType: user.type,
       userPoints: user.points,
+      contact: user.contact,
     });
   } catch (error) {
     res.status(500).json({ message: "Internal server error" });
