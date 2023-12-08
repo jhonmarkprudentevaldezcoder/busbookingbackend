@@ -20,7 +20,28 @@ app.use(express.urlencoded({ extended: false }));
 app.get("/", (req, res) => {
   res.send("API WORKING SUCCESS");
 });
+//get income
+app.get("/income/:incomeId", async (req, res) => {
+  try {
+    const incomeId = req.params.incomeId;
 
+    // Fetch the existing income record
+    const existingIncome = await BusesIncome.findOne({ _id: incomeId });
+
+    if (existingIncome) {
+      const actualIncome = parseFloat(existingIncome.income) || 0;
+
+      res.status(200).json({ actualIncome });
+    } else {
+      res.status(404).json({ message: "Income record not found" });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+//add income
 app.post("/income/:income", async (req, res) => {
   try {
     const incomeId = req.body.id;
