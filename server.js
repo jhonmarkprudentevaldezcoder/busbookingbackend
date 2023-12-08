@@ -5,6 +5,7 @@ const Buses = require("./models/busModel");
 const UserReserveds = require("./models/userReservedModel");
 const BusRoute = require("./models/routeSchema");
 const BusesInfo = require("./models/busInfoModel");
+const BusesIncome = require("./models/busIncomeModel");
 
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
@@ -18,6 +19,46 @@ app.use(express.urlencoded({ extended: false }));
 //default route
 app.get("/", (req, res) => {
   res.send("API WORKING SUCCESS");
+});
+
+app.post("/income/:income", async (req, res) => {
+  try {
+    const incomeId = req.body.id;
+    const newIncomeAmount = parseFloat(req.params.income) || 0;
+
+    const existingIncome = await BusesIncome.findOne({ id: incomeId });
+
+    if (existingIncome) {
+      const currentIncomeAmount = parseFloat(existingIncome.income) || 0;
+
+      console.log("Current Income Amount:", currentIncomeAmount);
+      console.log("New Income Amount:", newIncomeAmount);
+
+      const updatedIncome = await BusesIncome.findOneAndUpdate(
+        { id: incomeId },
+        {
+          $set: { income: (currentIncomeAmount + newIncomeAmount).toString() },
+        },
+        { new: true }
+      );
+
+      console.log("Updated Income:", updatedIncome);
+
+      res.status(200).json(updatedIncome);
+    } else {
+      const newIncome = await BusesIncome.create({
+        id: incomeId,
+        income: newIncomeAmount.toString(),
+      });
+
+      console.log("New Income Record:", newIncome);
+
+      res.status(200).json(newIncome);
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
 });
 
 app.post("/businfo", async (req, res) => {
