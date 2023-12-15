@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const busIncomeSchema = mongoose.Schema(
   {
     income: {
-      type: String,
+      type: Number,
+      default: "0",
     },
   },
   {

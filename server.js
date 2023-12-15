@@ -31,7 +31,8 @@ app.get("/income/:incomeId", async (req, res) => {
     if (existingIncome) {
       const actualIncome = parseFloat(existingIncome.income) || 0;
 
-      res.status(200).json({ actualIncome });
+      // Send only the actualIncome value in the response
+      res.status(200).json(actualIncome);
     } else {
       res.status(404).json({ message: "Income record not found" });
     }
@@ -41,43 +42,24 @@ app.get("/income/:incomeId", async (req, res) => {
   }
 });
 
-//add income
 app.post("/income/:income", async (req, res) => {
   try {
-    const incomeId = req.body.id;
     const newIncomeAmount = parseFloat(req.params.income) || 0;
 
-    const existingIncome = await BusesIncome.findOne({ id: incomeId });
+    const existingIncome = await BusesIncome.findOneAndUpdate(
+      {}, // No specific condition since _id is unique
+      { $inc: { income: newIncomeAmount } },
+      { new: true, upsert: true }
+    );
 
-    if (existingIncome) {
-      const currentIncomeAmount = parseFloat(existingIncome.income) || 0;
+    console.log(
+      existingIncome ? "Updated Income:" : "New Income Record:",
+      existingIncome
+    );
 
-      console.log("Current Income Amount:", currentIncomeAmount);
-      console.log("New Income Amount:", newIncomeAmount);
-
-      const updatedIncome = await BusesIncome.findOneAndUpdate(
-        { id: incomeId },
-        {
-          $set: { income: (currentIncomeAmount + newIncomeAmount).toString() },
-        },
-        { new: true }
-      );
-
-      console.log("Updated Income:", updatedIncome);
-
-      res.status(200).json(updatedIncome);
-    } else {
-      const newIncome = await BusesIncome.create({
-        id: incomeId,
-        income: newIncomeAmount.toString(),
-      });
-
-      console.log("New Income Record:", newIncome);
-
-      res.status(200).json(newIncome);
-    }
+    res.status(200).json(existingIncome);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(500).json({ message: error.message });
   }
 });
