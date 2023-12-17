@@ -30,7 +30,9 @@ const busSchema = mongoose.Schema(
     droppingName: {
       type: String,
     },
-
+    date: {
+      type: String,
+    },
     seatNo: {
       default: "32",
       type: String,

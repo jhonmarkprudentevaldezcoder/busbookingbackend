@@ -17,6 +17,9 @@ const busInfoSchema = mongoose.Schema(
     plateno: {
       type: String,
     },
+    date: {
+      type: String,
+    },
 
     seatNo: {
       default: "32",

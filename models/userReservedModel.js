@@ -47,6 +47,9 @@ const userReservedSchema = mongoose.Schema(
     totalSeats: {
       type: String,
     },
+    reservedDate: {
+      type: String,
+    },
   },
   {
     timestamps: true,

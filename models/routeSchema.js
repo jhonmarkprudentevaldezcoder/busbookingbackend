@@ -20,6 +20,9 @@ const busRouteSchema = mongoose.Schema(
     droppingName: {
       type: String,
     },
+    date: {
+      type: String,
+    },
     a1: {
       default: "available",
       type: String,
