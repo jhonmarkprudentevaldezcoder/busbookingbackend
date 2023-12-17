@@ -20,7 +20,7 @@ const busRouteSchema = mongoose.Schema(
     droppingName: {
       type: String,
     },
-    date: {
+    busdate: {
       type: String,
     },
     a1: {

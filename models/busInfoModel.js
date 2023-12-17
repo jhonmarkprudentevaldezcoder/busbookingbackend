@@ -17,7 +17,7 @@ const busInfoSchema = mongoose.Schema(
     plateno: {
       type: String,
     },
-    date: {
+    busdate: {
       type: String,
     },
 

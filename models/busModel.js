@@ -30,7 +30,7 @@ const busSchema = mongoose.Schema(
     droppingName: {
       type: String,
     },
-    date: {
+    busdate: {
       type: String,
     },
     seatNo: {
