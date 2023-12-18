@@ -180,6 +180,24 @@ app.get("/reserveds/:email", async (req, res) => {
   }
 });
 
+//search reserved by email
+app.get("/reserveds/id/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const reserved = await UserReserveds.find({ _id: id });
+
+    if (reserved.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No resreved id matching records found" });
+    }
+
+    res.status(200).json(reserved);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 //search reserved
 app.get("/reserved/:id/:busId/:userId", async (req, res) => {
   try {
@@ -510,10 +528,10 @@ app.get("/bus/:id/:seatId/:userId/seatChecker", async (req, res) => {
 });
 
 //search user
-app.get("/user/:id", async (req, res) => {
+app.get("/user/:username", async (req, res) => {
   try {
-    const { id } = req.params;
-    const users = await Users.find({ rfid: id });
+    const { username } = req.params;
+    const users = await Users.find({ username: username });
 
     if (users.length === 0) {
       return res.status(404).json({ message: "No matching records found" });
